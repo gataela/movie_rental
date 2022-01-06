@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- This is for using Thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Rental System</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body style="max-width: 960px; margin: 16px auto; padding: 16px">
+
+
+<h3>User List</h3>
+<!-- The link which sends GET request to "/showNewUserForm"  -->
+<a th:href="@{/showNewUserForm}"
+   class="waves-effect waves-light btn">Add new user</a>
+<div align="center" style="margin-top: 20px">
+    <table class="responsive-table striped highlight centered">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Age</th>
+<!--            <th>Actions</th>-->
+        </tr>
+        </thead>
+
+        <tbody>
+        <!-- You can access model attributes which are added in a Controller(MovieRentalSystemController.java) with ${attributeName}.
+             In this case, it is "${listUsers}".
+             To show all users data in this table, you need to use "th:each" in the thymeleaf template and iterate the user of listUsers -->
+        <tr th:each="user: ${listUsers}">
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.age}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
