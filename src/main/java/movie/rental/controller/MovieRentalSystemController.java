@@ -7,15 +7,19 @@ import movie.rental.repository.RentRepository;
 import movie.rental.repository.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-//- when you want to use swagger
-@RestController
-//@Controller
+import java.io.IOException;
+import java.util.Optional;
+
+//- when you want to use swagger - check what happened with swagger
+//@RestController
+@Controller
 public class MovieRentalSystemController {
 
     private final MovieRepository movieRepository;
@@ -65,12 +69,10 @@ public class MovieRentalSystemController {
     @PostMapping("/createUser")
     public ResponseEntity<String> createUser(@RequestParam("firstName") String firstName,
                                              @RequestParam("lastName") String lastName,
-                                             @RequestParam("email") String email,
-                                             @RequestParam("age") int age) {
+                                             @RequestParam("email") String email) {
 
         try {
             User user = new User();
-            user.setAge(age);
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
@@ -84,7 +86,7 @@ public class MovieRentalSystemController {
     }
 
     // POST
-    public ResponseEntity<String> rentMovie() {
+//    public ResponseEntity<String> rentMovie() {
         // User - username
         // Movie - movie name
         // no days
@@ -96,8 +98,8 @@ public class MovieRentalSystemController {
         // RENT -> new col date -> nu se trimite ca parameru, new ZoneDateTime -> rent movie
         //???
 
-        return null;
-    }
+//        return null;
+//    }
 //
 //    @GetMapping(path = "/image-by-name/{name:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
 //    public byte[] imageByPath(@PathVariable(name = "name") String name) {
@@ -148,7 +150,7 @@ public class MovieRentalSystemController {
         User user = new User();
 
         // We can use this attribute "user" to perform server-side rendering of the HTML with using Thymeleaf.
-        // We set employee object as "user"
+        // We set user object as "user"
         model.addAttribute("user", user);
 
         //	shows the create_user.html template:
@@ -160,10 +162,63 @@ public class MovieRentalSystemController {
     // This means that this method will be executed when user sends POST Requests to "/saveUser"
     // In our case, "http://localhost:8080/saveUser"
     public String saveUser(@ModelAttribute("user") User user) {
-        //	@ModelAttribute  binds the object called "user" of request body from the POST request into the employee parameter of the save() method.
+        //	@ModelAttribute  binds the object called "user" of request body from the POST request into the user parameter of the save() method.
         userRepository.save(user);
         // after save the user data to database, redirect to "/users"
         return "redirect:/users";
+    }
+
+
+    @RequestMapping(value = "/image/{movieId}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getImage(@PathVariable("movieId") Long movieId) throws IOException {
+        Movie movie = movieRepository.findById(movieId).get();
+        byte[] imageContent = movie.getImage();
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(imageContent, headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/rentMovie/{id}")
+    public String rentMovie(@PathVariable("id") Long movieId) {
+        //TODO - get somehow the user and insert new entry in DB
+        return "redirect:/rentals";
+    }
+
+    @GetMapping("/rentals")
+    public String showRentals(Model model) {
+        //	We can use this attribute "listRentals" to perform server-side rendering of the HTML with using Thymeleaf.
+        //	We set all rental data to "listRentals"
+        model.addAttribute("listRentals", rentRepository.findAll());
+        //		shows the rentals.html template
+        return "rentals";
+    }
+
+
+
+    @GetMapping("/showNewMovieForm")
+    public String showNewMovieForm(Model model) {
+        Movie movie = new Movie();
+        // We can use this attribute "movie" to perform server-side rendering of the HTML with using Thymeleaf.
+        // We set movie object as "movie"
+        model.addAttribute("movie", movie);
+        //	shows the create_movie.html template:
+        return "create_movie";
+    }
+
+    @PostMapping("/saveMovie")
+    // This means that this method will be executed when user sends POST Requests to "/saveUser"
+    // In our case, "http://localhost:8080/saveUser"
+    public String saveMovie(@ModelAttribute("movie") Movie movie) {
+        //	@ModelAttribute  binds the object called "movie" of request body from the POST request into the movie parameter of the save() method.
+        movieRepository.save(movie);
+        // after save the user data to database, redirect to "/index"
+        return "redirect:/";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "admin";
     }
 
 }

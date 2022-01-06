@@ -12,9 +12,22 @@ public class Rent {
     private Movie movie;
     @ManyToOne
     private User user;
+    private int days;
 
     public Rent() {
 
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 
     public Long getId() {

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- This is for using Thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Rental System</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body style="max-width: 960px; margin: 16px auto; padding: 16px">
+
+
+<h3>Admin Page</h3>
+
+<div class="buttons">
+
+    <div class="action_btn">
+
+        <a th:href="@{/showNewUserForm}"
+           class="waves-effect waves-light btn">Add new user</a>
+        <a th:href="@{/showNewMovieForm}"
+           class="waves-effect waves-light btn">Add new movie</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

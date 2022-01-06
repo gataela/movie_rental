@@ -12,7 +12,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private int age;
     @OneToMany
     private List<Rent> rents;
 
@@ -60,12 +59,4 @@ public class User {
     }
 
 
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 }

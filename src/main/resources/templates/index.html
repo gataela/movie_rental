@@ -16,17 +16,21 @@
 
 
 <h3>Movie List</h3>
+<!--<a th:href="@{/showNewUserForm}"-->
+<!--   class="waves-effect waves-light btn">Add new user</a>-->
 <div align="center" style="margin-top: 20px">
     <table class="responsive-table striped highlight centered">
         <thead>
         <tr>
+            <th>Image</th>
             <th>Movie Name</th>
             <th>Description</th>
             <th>Launch Date</th>
             <th>Director</th>
             <th>Type</th>
             <th>Duration</th>
-<!--            <th>Image</th>-->
+            <th>Price</th>
+            <th>Rent Movie</th>
         </tr>
         </thead>
 
@@ -35,15 +39,23 @@
              In this case, it is "${listMovies}".
              To show all movies data in this table, you need to use "th:each" in the thymeleaf template and iterate the movie of listMovies -->
         <tr th:each="movie: ${listMovies}">
+            <td><img src="@{/image/${movie.id}}" height=100 width=300/></th>
             <td th:text="${movie.name}"></td>
             <td th:text="${movie.description}"></td>
             <td th:text="${movie.launch_date}"></td>
             <td th:text="${movie.director}"></td>
             <td th:text="${movie.type}"></td>
+            <td th:text="${movie.price}"></td>
             <td th:text="${movie.duration}"></td>
+            <td>
+                <!-- The link which sends GET request to "/rentMovie/{id}" (id is movie.id)  -->
+                <a th:href="@{/rentMovie/{id}(id=${movie.id})}"
+                   class="waves-effect waves-light btn">Rent Movie</a>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
+
 </body>
 </html>

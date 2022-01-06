@@ -5,43 +5,62 @@
     <meta charset="UTF-8">
     <title>Movie Rental System</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+          rel="stylesheet">
 
     <!-- Compiled and minified JavaScript -->
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body style="max-width: 960px; margin: 16px auto; padding: 16px">
-<h3>Add New User</h3>
-<!-- The th:action="@{/saveUser}" expression directs the form to POST to the /saveUser endpoint.
-     The th:object="${user}" expression declares the model object to use for collecting the form data.
-     The three form fields, expressed with th:field, correspond to the fields in the User object. -->
-<form th:action="@{/saveUser}" th:object="${user}" method="post">
-    <div class="row">
-        <div class="input-field col s6">
-            <input id="first_name" type="text" class="validate"
-                   th:field="*{firstName}"> <label for="first_name">First
-            Name</label>
-        </div>
-        <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate"
-                   th:field="*{lastName}"> <label for="last_name">Last
-            Name</label>
-        </div>
+<h3>Add New Movie</h3>
+<!-- The th:action="@{/saveMovie}" expression directs the form to POST to the /saveMovie endpoint.
+     The th:object="${movie}" expression declares the model object to use for collecting the form data.
+     The form fields, expressed with th:field, correspond to the fields in the Movie object. -->
+<form class="form-horizontal" method="post" th:action="@{/saveMovie}" th:object="${movie}">
+    <div>
+        <label for="description">Movie Name</label>
+        <input class="validate" id="name" th:field="*{name}"  type="text" >
     </div>
-    <div class="row">
-        <div class="input-field col s6">
-            <input id="email" type="email" class="validate" th:field="*{email}">
-            <label for="email">Email</label>
-        </div>
+    <div>
+        <label for="description">Description</label>
+        <input class="validate" id="description" th:field="*{description}"  type="text" >
     </div>
-    <button type="submit" class="waves-effect waves-light btn">Add
-        User</button>
+    <div>
+        <label for="launch_date">Launch Date</label>
+        <input class="validate" id="launch_date" th:field="*{launch_date}" type="text" >
+    </div>
+    <div>
+        <label for="director">Director</label>
+        <input class="validate" id="director" th:field="*{director}"  type="text" >
+    </div>
+    <div>
+        <label for="type">Type</label>
+        <input class="validate" id="type" th:field="*{type}"  type="text" >
+    </div>
+    <div>
+        <label for="duration">Duration</label>
+        <input class="validate" id="duration" th:field="*{duration}" type="text" >
+
+    </div>
+    <div>
+        <label for="price">Price</label>
+        <input class="validate" id="price" th:field="*{price}"  type="text" >
+    </div>
+
+    <div>
+        <input type="file" name="fileupload" value="fileupload" id="image" th:field="*{image}">
+        <label for="image">Image</label>
+    </div>
+
+    <br>
+    <br>
+    <button class="waves-effect waves-light btn" type="submit">Add Movie</button>
 </form>
+
+
 <br>
-<!-- The link which sends GET request to "/"  -->
-<a th:href="@{/}"
-   class="blue-text">Back</a>
+<a class="blue-text"
+   th:href="@{/admin}">Back</a>
 </body>
 </html>
