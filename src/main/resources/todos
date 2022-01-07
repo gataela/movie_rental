@@ -20,3 +20,8 @@ TODOS:
 BUG:
 - without the admin auth, a regular user cannot rent. Somehow the paths are not excluded correctly
 Please try to fix it
+
+For a better understanding please try to create the following documentation:
+- create UML diagram
+- create entity relational diagram -> Database diagram
+- create sequence diagram
