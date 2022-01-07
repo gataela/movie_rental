@@ -2,7 +2,7 @@ package movie.rental.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class MovieInformation {
+public class MovieInfoDto {
 
     private String name;
     private String description;

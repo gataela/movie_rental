@@ -16,7 +16,7 @@ public class CustomWebSecurityConfigureAdapter extends WebSecurityConfigurerAdap
         http.csrf().ignoringAntMatchers("/h2-console/**").disable()
                 .headers().frameOptions().disable().and()
                 .authorizeRequests()
-                .antMatchers("/", "/rentals", "/index", "/h2-console*", "/image/*").permitAll()
+                .antMatchers("/", "/rentals", "/index", "/h2-console*", "/image/*", "/findMovie/*", "/rentMovie/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

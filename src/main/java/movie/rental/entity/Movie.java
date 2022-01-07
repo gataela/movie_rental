@@ -18,7 +18,7 @@ public class Movie {
     @Lob
     private byte[] image;
     @OneToMany
-    private List<Rent> rents;
+    private List<Rental> rentals;
 
     public Movie() {
     }
@@ -107,11 +107,11 @@ public class Movie {
         this.image = image;
     }
 
-    public List<Rent> getRents() {
-        return rents;
+    public List<Rental> getRents() {
+        return rentals;
     }
 
-    public void setRents(List<Rent> rents) {
-        this.rents = rents;
+    public void setRents(List<Rental> rentals) {
+        this.rentals = rentals;
     }
 }

@@ -1,7 +1,9 @@
 package movie.rental.controller;
 
-import movie.rental.dto.MovieInformation;
+import movie.rental.dto.MovieInfoDto;
+import movie.rental.dto.RentDto;
 import movie.rental.entity.Movie;
+import movie.rental.entity.Rental;
 import movie.rental.entity.User;
 import movie.rental.repository.MovieRepository;
 import movie.rental.repository.RentRepository;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -80,7 +83,7 @@ public class MovieRentalSystemController {
     }
 
 
-    @GetMapping("/rentMovie/{id}")
+    @GetMapping("/findMovie/{id}")
     @ResponseBody
     public Movie rentMovie(@PathVariable("id") Long movieId) {
         //TODO - get somehow the user and insert new entry in DB
@@ -105,7 +108,7 @@ public class MovieRentalSystemController {
 //        model.addAttribute("movie", movie);
 
 
-        MovieInformation movieInfo = new MovieInformation();
+        MovieInfoDto movieInfo = new MovieInfoDto();
         model.addAttribute("movieInfo", movieInfo);
         //	shows the create_movie_info.html template:
         return "create_movie_info";
@@ -114,7 +117,7 @@ public class MovieRentalSystemController {
     @RequestMapping("/saveMovieInfo")
     // This means that this method will be executed when user sends POST Requests to "/saveMovie"
     // In our case, "http://localhost:8080/saveMovie"
-    public String saveMovieInfo(@ModelAttribute("movieInfo") MovieInformation movieInfo) throws IOException {
+    public String saveMovieInfo(@ModelAttribute("movieInfo") MovieInfoDto movieInfo) throws IOException {
         //	@ModelAttribute  binds the object called "movie" of request body from the POST request into the movie parameter of the save() method.
         Movie movie = new Movie();
         movie.setImage(movieInfo.getImage().getBytes());
@@ -157,21 +160,41 @@ public class MovieRentalSystemController {
     //methode delete for removing item from Jpa data base. Item finding implements also by item id;
     @GetMapping("/delete")
     public String delete(Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).get();
+        List<Rental> rentals = rentRepository.findByUser(user);
+        for(Rental rental: rentals){
+            rentRepository.delete(rental);
+        }
+        userRepository.delete(user);
         logger.info("User has been removed. Users id: " + id);
         return "redirect:/users";
     }
 
 
-    @RequestMapping(value = "/checkUser", method = RequestMethod.POST)
-    public String checkUser(String movieId, User user) {
-        User userFromDb = userRepository.findByEmail(user.getEmail());
+    @RequestMapping(value = "/rentMovie")
+    public String checkUser(RentDto rentDto) {
+        User userFromDb = userRepository.findByEmail(rentDto.getEmail());
         if (userFromDb == null) {
-            logger.info("New user was created " + user.getEmail());
-            userRepository.save(user);
+            User newUser = new User();
+            newUser.setFirstName(rentDto.getFirstName());
+            newUser.setLastName(rentDto.getLastName());
+            newUser.setEmail(rentDto.getEmail());
+            logger.info("New user was created " + rentDto.getEmail());
+            userRepository.save(newUser);
+            userFromDb = newUser;
         }
 
-        movieRepository.findById(Long.parseLong(movieId));
+        Optional<Movie> optionalMovie = movieRepository.findById(rentDto.getMovieId());
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            Rental rental = new Rental();
+            rental.setMovie(movie);
+            rental.setDays(1);
+            rental.setUser(userFromDb);
+            rentRepository.save(rental);
+            return "redirect:/rentals";
+        }
+        logger.error("Movie does not exist! This case should never occur!");
         return "redirect:/";
     }
 

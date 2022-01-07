@@ -21,14 +21,13 @@ $(document).ready(function(){
         var href = $(this).attr('href');
         var text = $(this).text();
         $.get(href, function (movie, status) {
-                    $('.myFormUpdate #movieId').val(movie.id);
-        }
-            //for creating user
-
-            $('.myFormCreate #firstName').val('');
-            $('.myFormCreate #lastName').val('');
-            $('.myFormCreate #email').val('');
-            $('.myFormCreate #myModalCreate').modal();
+            $('.myFormCreate #movieId').val(movie.id);
+        });
+       $('.myFormCreate #firstName').val('');
+       $('.myFormCreate #lastName').val('');
+       $('.myFormCreate #email').val('');
+       $('.myFormCreate #days').val('');
+       $('.myFormCreate #myModalCreate').modal();
 
     });
 });
@@ -67,7 +66,6 @@ $(document).ready(function(){
                          To show all movies data in this table, you need to use "th:each" in the thymeleaf template and iterate the movie of listMovies -->
                     <tr th:each="movie: ${listMovies}">
                         <td><img height=300 th:src="@{${'/image/' + movie.id}}" width=300></td>
-                        <!--                        <td><img height=100 src="${movie.image}" width=300></td>-->
                         <td th:text="${movie.name}"></td>
                         <td th:text="${movie.description}"></td>
                         <td th:text="${movie.launch_date}"></td>
@@ -76,9 +74,9 @@ $(document).ready(function(){
                         <td th:text="${movie.price}"></td>
                         <td th:text="${movie.duration}"></td>
                         <td>
-                            <!-- The link which sends GET request to "/rentMovie/{id}" (id is movie.id)  -->
+                            <!-- The link which sends GET request to "/findMovie/{id}" (id is movie.id)  -->
                             <a class="btn btn-success nBtn"
-                               th:href="@{/rentMovie/{id}(id=${movie.id})}">Rent Movie</a>
+                               th:href="@{/findMovie/{id}(id=${movie.id})}">Rent Movie</a>
                         </td>
                     </tr>
                     </tbody>
@@ -89,7 +87,7 @@ $(document).ready(function(){
 
             <!--#Modal for user create-->
             <div class="myFormCreate">
-                <form method="post" th:action="@{/checkUser}">
+                <form method="post" th:action="@{/rentMovie}">
                     <div aria-hidden="true" aria-labelledby="modalLabelCreate" class="modal fade" id="myModalCreate"
                          role="dialog" tabindex="-1">
                         <div class="modal-dialog" role="document">
@@ -119,6 +117,10 @@ $(document).ready(function(){
                                     <div class="form-group">
                                         <label class="col-form-label" for="email">User email:</label>
                                         <input class="form-control" id="email" name="email" type="text" value=""/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="days">How many days:</label>
+                                        <input class="form-control" id="days" name="days" type="text" value=""/>
                                     </div>
                                 </div>
                                 <div class="modal-footer">

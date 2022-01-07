@@ -1,7 +1,7 @@
 package movie.rental;
 
 import movie.rental.entity.Movie;
-import movie.rental.entity.Rent;
+import movie.rental.entity.Rental;
 import movie.rental.entity.User;
 import movie.rental.repository.MovieRepository;
 import movie.rental.repository.RentRepository;
@@ -50,7 +50,7 @@ public class PopulateDatabase {
         movieRepository.save(movie);
 
 
-        Rent rental = new Rent();
+        Rental rental = new Rental();
         rental.setDays(2);
         rental.setMovie(movie);
         rental.setUser(user);

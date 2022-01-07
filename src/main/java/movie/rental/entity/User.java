@@ -1,5 +1,9 @@
 package movie.rental.entity;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +17,7 @@ public class User {
     private String lastName;
     private String email;
     @OneToMany
-    private List<Rent> rents;
+    private List<Rental> rentals;
 
     public User() {
     }
@@ -42,12 +46,12 @@ public class User {
         this.email = email;
     }
 
-    public List<Rent> getRents() {
-        return rents;
+    public List<Rental> getRents() {
+        return rentals;
     }
 
-    public void setRents(List<Rent> rents) {
-        this.rents = rents;
+    public void setRents(List<Rental> rentals) {
+        this.rentals = rentals;
     }
 
     public Long getId() {

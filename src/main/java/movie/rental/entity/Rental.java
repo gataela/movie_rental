@@ -3,7 +3,7 @@ package movie.rental.entity;
 import javax.persistence.*;
 
 @Entity
-public class Rent {
+public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +14,7 @@ public class Rent {
     private User user;
     private int days;
 
-    public Rent() {
+    public Rental() {
 
     }
 
