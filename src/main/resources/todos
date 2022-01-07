@@ -10,6 +10,7 @@ TODOS:
        - proper naming of methods, API calls
        - create additional controller class and move admin API there
        - extract css code and javascript code (jquery) in 2 files (.js, .css) and include the link to the files in the html
+       - beautify tables
 - implement login for User
 - implement authorization based on Roles in spring
 - handle error cases
@@ -17,5 +18,5 @@ TODOS:
 
 
 BUG:
-- without the admin auth, a regular user cannot rent. Somehow the paths are not excluded corrently
-Please try to fix it :)
+- without the admin auth, a regular user cannot rent. Somehow the paths are not excluded correctly
+Please try to fix it
