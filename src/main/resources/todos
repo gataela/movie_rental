@@ -1,4 +1,21 @@
 TODOS:
 
+- try to understand the project
 - prepare an sql file with inserts, in order to populate DB
-- get somehow the user and insert new entry in DB
+- add test cases - JUnit tests
+- try to implement REST calls for swagger -> the new controller
+- implement delete button and edit button for Movie -> implement delete action and edit action
+- refactor
+       - add proper logging everywhere
+       - proper naming of methods, API calls
+       - create additional controller class and move admin API there
+       - extract css code and javascript code (jquery) in 2 files (.js, .css) and include the link to the files in the html
+- implement login for User
+- implement authorization based on Roles in spring
+- handle error cases
+- try to find as many bugs as you can -> I am pretty sure there are plenty of them ;)
+
+
+BUG:
+- without the admin auth, a regular user cannot rent. Somehow the paths are not excluded corrently
+Please try to fix it :)

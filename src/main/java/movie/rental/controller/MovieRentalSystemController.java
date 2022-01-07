@@ -86,7 +86,6 @@ public class MovieRentalSystemController {
     @GetMapping("/findMovie/{id}")
     @ResponseBody
     public Movie rentMovie(@PathVariable("id") Long movieId) {
-        //TODO - get somehow the user and insert new entry in DB
         return movieRepository.findById(movieId).get();
     }
 
