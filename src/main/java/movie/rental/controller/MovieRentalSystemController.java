@@ -5,6 +5,9 @@ import movie.rental.entity.User;
 import movie.rental.repository.MovieRepository;
 import movie.rental.repository.RentRepository;
 import movie.rental.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +24,7 @@ import java.util.Optional;
 //@RestController
 @Controller
 public class MovieRentalSystemController {
-
+    private static final Logger logger = LoggerFactory.getLogger(MovieRentalSystemController.class);
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
     private final RentRepository rentRepository;
@@ -138,7 +141,7 @@ public class MovieRentalSystemController {
         //	We can use this attribute "listUsers" to perform server-side rendering of the HTML with using Thymeleaf.
         //	We set all user data to "listUsers"
         model.addAttribute("listUsers", userRepository.findAll());
-        //		shows the users.html template:
+        //		shows the users_old.html template:
         return "users";
     }
 
@@ -158,19 +161,11 @@ public class MovieRentalSystemController {
     }
 
 
-    @PostMapping("/saveUser")
-    // This means that this method will be executed when user sends POST Requests to "/saveUser"
-    // In our case, "http://localhost:8080/saveUser"
-    public String saveUser(@ModelAttribute("user") User user) {
-        //	@ModelAttribute  binds the object called "user" of request body from the POST request into the user parameter of the save() method.
-        userRepository.save(user);
-        // after save the user data to database, redirect to "/users"
-        return "redirect:/users";
-    }
 
 
-    @RequestMapping(value = "/image/{movieId}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getImage(@PathVariable("movieId") Long movieId) throws IOException {
+
+    @RequestMapping(value = "/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") Long movieId) throws IOException {
         Movie movie = movieRepository.findById(movieId).get();
         byte[] imageContent = movie.getImage();
         final HttpHeaders headers = new HttpHeaders();
@@ -180,9 +175,10 @@ public class MovieRentalSystemController {
 
 
     @GetMapping("/rentMovie/{id}")
-    public String rentMovie(@PathVariable("id") Long movieId) {
+    @ResponseBody
+    public Movie rentMovie(@PathVariable("id") Long movieId) {
         //TODO - get somehow the user and insert new entry in DB
-        return "redirect:/rentals";
+        return movieRepository.findById(movieId).get();
     }
 
     @GetMapping("/rentals")
@@ -219,6 +215,58 @@ public class MovieRentalSystemController {
     @GetMapping("/admin")
     public String adminPage() {
         return "admin";
+    }
+
+
+
+
+
+    @PostMapping("/save")
+    // This means that this method will be executed when user sends POST Requests to "/saveUser"
+    // In our case, "http://localhost:8080/saveUser"
+    public String saveUser(@ModelAttribute("user") User user) {
+        //	@ModelAttribute  binds the object called "user" of request body from the POST request into the user parameter of the save() method.
+        userRepository.save(user);
+        // after save the user data to database, redirect to "/users"
+        return "redirect:/users";
+    }
+
+
+//    //method for users list viewing + pagination. Default is 6 items per page;
+//    @GetMapping("/users")
+//    public String showListOfUsers(Model model, @RequestParam(defaultValue = "0") int page) {
+//        model.addAttribute("data", userRepository.findAll());
+//        model.addAttribute("currentPage", page);
+//        return "users";
+//    }
+
+
+    //method update for find & edit item by item Id;
+    @GetMapping("/edit")
+    @ResponseBody
+    public Optional<User> update(Long id) {
+        return userRepository.findById(id);
+    }
+
+    //methode delete for removing item from Jpa data base. Item finding implements also by item id;
+    @GetMapping("/delete")
+    public String delete(Long id) {
+        userRepository.deleteById(id);
+        logger.info("User has been removed. Users id: " + id);
+        return "redirect:/users";
+    }
+
+
+    @RequestMapping(value = "/checkUser", method = RequestMethod.POST)
+    public String checkUser(String movieId, User user) {
+        User userFromDb = userRepository.findByEmail(user.getEmail());
+        if(userFromDb == null){
+            logger.info("New user was created " + user.getEmail());
+            userRepository.save(user);
+        }
+
+        movieRepository.findById(Long.parseLong(movieId));
+        return "redirect:/";
     }
 
 }

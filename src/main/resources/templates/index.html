@@ -13,11 +13,35 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body style="max-width: 960px; margin: 16px auto; padding: 16px">
+<script type ="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.nBtn').on('click', function(event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        var text = $(this).text();
+        $.get(href, function (movie, status) {
+                    $('.myFormUpdate #movieId').val(movie.id);
+        }
+            //for creating user
 
+            $('.myFormCreate #firstName').val('');
+            $('.myFormCreate #lastName').val('');
+            $('.myFormCreate #email').val('');
+            $('.myFormCreate #myModalCreate').modal();
 
+    });
+});
+</script>
+<script type ="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
 <h3>Movie List</h3>
 <!--<a th:href="@{/showNewUserForm}"-->
 <!--   class="waves-effect waves-light btn">Add new user</a>-->
+
+<div class="bottom">
+
+    <div class="col">
+        <div class="container">
 <div align="center" style="margin-top: 20px">
     <table class="responsive-table striped highlight centered">
         <thead>
@@ -39,7 +63,7 @@
              In this case, it is "${listMovies}".
              To show all movies data in this table, you need to use "th:each" in the thymeleaf template and iterate the movie of listMovies -->
         <tr th:each="movie: ${listMovies}">
-            <td><img src="@{/image/${movie.id}}" height=100 width=300/></th>
+            <td><img src="@{/image/{id}(id=${movie.id})}" height=100 width=300></td>
             <td th:text="${movie.name}"></td>
             <td th:text="${movie.description}"></td>
             <td th:text="${movie.launch_date}"></td>
@@ -50,12 +74,57 @@
             <td>
                 <!-- The link which sends GET request to "/rentMovie/{id}" (id is movie.id)  -->
                 <a th:href="@{/rentMovie/{id}(id=${movie.id})}"
-                   class="waves-effect waves-light btn">Rent Movie</a>
+                   class="btn btn-success nBtn">Rent Movie</a>
             </td>
         </tr>
         </tbody>
     </table>
+
 </div>
 
+
+<!--#Modal for user create-->
+<div class="myFormCreate">
+    <form th:action="@{/checkUser}" method="post">
+        <div class="modal fade" id="myModalCreate" tabindex="-1" role="dialog" aria-labelledby="modalLabelCreate" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" align="right">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="alert alert-info">
+                            Please add your details
+                        </p>
+                        <div class="form-group">
+                            <!--<label for="movieId" class="col-form-label">movieId:</th:text></label>-->
+                            <input type="hidden" class="form-control" id="movieId" name="movieId" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName" class="col-form-label">First Name:</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="col-form-label">Last Name:</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">User email:</label>
+                            <input type="text" class="form-control" id="email" name="email" value=""/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Done"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--End form-->
+        </div></div></div>
 </body>
 </html>

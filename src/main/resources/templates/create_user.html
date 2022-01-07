@@ -17,7 +17,7 @@
 <!-- The th:action="@{/saveUser}" expression directs the form to POST to the /saveUser endpoint.
      The th:object="${user}" expression declares the model object to use for collecting the form data.
      The three form fields, expressed with th:field, correspond to the fields in the User object. -->
-<form th:action="@{/saveUser}" th:object="${user}" method="post">
+<form th:action="@{/save}" th:object="${user}" method="post">
     <div class="row">
         <div class="input-field col s6">
             <input id="first_name" type="text" class="validate"
