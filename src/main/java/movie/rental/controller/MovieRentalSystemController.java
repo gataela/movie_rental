@@ -7,7 +7,6 @@ import movie.rental.repository.RentRepository;
 import movie.rental.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,13 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
 
-//- when you want to use swagger - check what happened with swagger
-//@RestController
+
 @Controller
 public class MovieRentalSystemController {
     private static final Logger logger = LoggerFactory.getLogger(MovieRentalSystemController.class);
@@ -36,95 +33,6 @@ public class MovieRentalSystemController {
         this.rentRepository = rentRepository;
     }
 
-    //REST ENDPOINTURI
-
-    @PostMapping("/create-movie")
-    public ResponseEntity<String> createMovie(@RequestParam("name") String name,
-                                              @RequestParam("description") String description,
-                                              @RequestParam("launch_date") String date,
-                                              @RequestParam("director") String director,
-                                              @RequestParam("duration") int duration,
-                                              @RequestParam("type") String type,
-                                              @RequestParam("price") double price,
-                                              @RequestParam("image") MultipartFile image
-    ) {
-
-        try {
-            Movie movie = new Movie();
-            movie.setDescription(description);
-            movie.setImage(image.getBytes());
-            movie.setName(name);
-            movie.setLaunch_date(date);
-            movie.setDirector(director);
-            movie.setType(type);
-            movie.setPrice(price);
-            movie.setDuration(duration);
-
-            movieRepository.save(movie);
-
-            return new ResponseEntity<>("Movie was successfully inserted.", new HttpHeaders(), HttpStatus.OK);
-        } catch (Exception exception) {
-            return new ResponseEntity<>("Could not insert the movie.", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
-        }
-
-    }
-
-    @PostMapping("/createUser")
-    public ResponseEntity<String> createUser(@RequestParam("firstName") String firstName,
-                                             @RequestParam("lastName") String lastName,
-                                             @RequestParam("email") String email) {
-
-        try {
-            User user = new User();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            userRepository.save(user);
-
-            return new ResponseEntity<>("User was successfully inserted.", new HttpHeaders(), HttpStatus.OK);
-        } catch (Exception exception) {
-            return new ResponseEntity<>("Could not insert the user.", new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
-        }
-
-    }
-
-    // POST
-//    public ResponseEntity<String> rentMovie() {
-        // User - username
-        // Movie - movie name
-        // no days
-        // FindByName ? user in db, userRepository
-        // user exist -> create user
-        // findByName - movie in db, movieRepository
-        // movie exists? no -> return, Sorry, movie does not exist
-        // yes -> save - rent -> set user, set movie, set days
-        // RENT -> new col date -> nu se trimite ca parameru, new ZoneDateTime -> rent movie
-        //???
-
-//        return null;
-//    }
-//
-//    @GetMapping(path = "/image-by-name/{name:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
-//    public byte[] imageByPath(@PathVariable(name = "name") String name) {
-//
-//    }
-
-    //@GetMapping
-    //getMovie (name sau id)
-    //getUser (name sau id)
-    //getRent (username and movie name) -> list
-    //getAllMovies
-    //getAllUsers
-    //getAllRents -> return -> Ale -> rent - > Movie1 -> on 2021
-    //                         Ale -> rent -> Movie2 -> on 2022
-     //                        Oana -> rent -> Movie1 -> 2022
-
-
-    //getRentalsByUser (Param username) -> all movies rent by this user
-    //getRentalByMovies (Param filename) -> This movie was rented by who?
-
-
-    //Delete -> delete, movie, delete user -> cascade? rent
 
     @GetMapping("/")
     public String viewHomePage(Model model) {
@@ -141,7 +49,7 @@ public class MovieRentalSystemController {
         //	We can use this attribute "listUsers" to perform server-side rendering of the HTML with using Thymeleaf.
         //	We set all user data to "listUsers"
         model.addAttribute("listUsers", userRepository.findAll());
-        //		shows the users_old.html template:
+        //		shows the users.html template:
         return "users";
     }
 
@@ -159,9 +67,6 @@ public class MovieRentalSystemController {
         //	shows the create_user.html template:
         return "create_user";
     }
-
-
-
 
 
     @RequestMapping(value = "/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
@@ -191,7 +96,6 @@ public class MovieRentalSystemController {
     }
 
 
-
     @GetMapping("/showNewMovieForm")
     public String showNewMovieForm(Model model) {
         Movie movie = new Movie();
@@ -218,9 +122,6 @@ public class MovieRentalSystemController {
     }
 
 
-
-
-
     @PostMapping("/save")
     // This means that this method will be executed when user sends POST Requests to "/saveUser"
     // In our case, "http://localhost:8080/saveUser"
@@ -230,15 +131,6 @@ public class MovieRentalSystemController {
         // after save the user data to database, redirect to "/users"
         return "redirect:/users";
     }
-
-
-//    //method for users list viewing + pagination. Default is 6 items per page;
-//    @GetMapping("/users")
-//    public String showListOfUsers(Model model, @RequestParam(defaultValue = "0") int page) {
-//        model.addAttribute("data", userRepository.findAll());
-//        model.addAttribute("currentPage", page);
-//        return "users";
-//    }
 
 
     //method update for find & edit item by item Id;
@@ -260,7 +152,7 @@ public class MovieRentalSystemController {
     @RequestMapping(value = "/checkUser", method = RequestMethod.POST)
     public String checkUser(String movieId, User user) {
         User userFromDb = userRepository.findByEmail(user.getEmail());
-        if(userFromDb == null){
+        if (userFromDb == null) {
             logger.info("New user was created " + user.getEmail());
             userRepository.save(user);
         }
@@ -269,4 +161,9 @@ public class MovieRentalSystemController {
         return "redirect:/";
     }
 
+
+    @GetMapping("/login")
+    public String viewLoginPage() {
+        return "login";
+    }
 }

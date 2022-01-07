@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <title>Movie Rental System</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+          rel="stylesheet">
 
     <!-- Compiled and minified JavaScript -->
     <script
@@ -21,10 +21,12 @@
 
     <div class="action_btn">
 
-        <a th:href="@{/showNewUserForm}"
-           class="waves-effect waves-light btn">Add new user</a>
-        <a th:href="@{/showNewMovieForm}"
-           class="waves-effect waves-light btn">Add new movie</a>
+        <a class="waves-effect waves-light btn"
+           th:href="@{/showNewUserForm}">Add new user</a>
+        <a class="waves-effect waves-light btn"
+           th:href="@{/showNewMovieForm}">Add new movie</a>
+        <a class="waves-effect waves-light btn"
+           th:href="@{/logout}">Logout</a>
 
     </div>
 

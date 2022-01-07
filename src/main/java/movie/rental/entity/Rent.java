@@ -18,10 +18,6 @@ public class Rent {
 
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public int getDays() {
         return days;
     }
@@ -48,6 +44,10 @@ public class Rent {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setUsers(User user) {

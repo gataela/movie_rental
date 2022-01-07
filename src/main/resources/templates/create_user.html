@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <title>Movie Rental System</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+          rel="stylesheet">
 
     <!-- Compiled and minified JavaScript -->
     <script
@@ -17,31 +17,32 @@
 <!-- The th:action="@{/saveUser}" expression directs the form to POST to the /saveUser endpoint.
      The th:object="${user}" expression declares the model object to use for collecting the form data.
      The three form fields, expressed with th:field, correspond to the fields in the User object. -->
-<form th:action="@{/save}" th:object="${user}" method="post">
+<form method="post" th:action="@{/save}" th:object="${user}">
     <div class="row">
         <div class="input-field col s6">
-            <input id="first_name" type="text" class="validate"
-                   th:field="*{firstName}"> <label for="first_name">First
+            <input class="validate" id="first_name" th:field="*{firstName}"
+                   type="text"> <label for="first_name">First
             Name</label>
         </div>
         <div class="input-field col s6">
-            <input id="last_name" type="text" class="validate"
-                   th:field="*{lastName}"> <label for="last_name">Last
+            <input class="validate" id="last_name" th:field="*{lastName}"
+                   type="text"> <label for="last_name">Last
             Name</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s6">
-            <input id="email" type="email" class="validate" th:field="*{email}">
+            <input class="validate" id="email" th:field="*{email}" type="email">
             <label for="email">Email</label>
         </div>
     </div>
-    <button type="submit" class="waves-effect waves-light btn">Add
-        User</button>
+    <button class="waves-effect waves-light btn" type="submit">Add
+        User
+    </button>
 </form>
 <br>
 <!-- The link which sends GET request to "/"  -->
-<a th:href="@{/admin}"
-   class="blue-text">Back</a>
+<a class="blue-text"
+   th:href="@{/admin}">Back</a>
 </body>
 </html>

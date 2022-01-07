@@ -20,36 +20,36 @@
 <form class="form-horizontal" method="post" th:action="@{/saveMovie}" th:object="${movie}">
     <div>
         <label for="description">Movie Name</label>
-        <input class="validate" id="name" th:field="*{name}"  type="text" >
+        <input class="validate" id="name" th:field="*{name}" type="text">
     </div>
     <div>
         <label for="description">Description</label>
-        <input class="validate" id="description" th:field="*{description}"  type="text" >
+        <input class="validate" id="description" th:field="*{description}" type="text">
     </div>
     <div>
         <label for="launch_date">Launch Date</label>
-        <input class="validate" id="launch_date" th:field="*{launch_date}" type="text" >
+        <input class="validate" id="launch_date" th:field="*{launch_date}" type="text">
     </div>
     <div>
         <label for="director">Director</label>
-        <input class="validate" id="director" th:field="*{director}"  type="text" >
+        <input class="validate" id="director" th:field="*{director}" type="text">
     </div>
     <div>
         <label for="type">Type</label>
-        <input class="validate" id="type" th:field="*{type}"  type="text" >
+        <input class="validate" id="type" th:field="*{type}" type="text">
     </div>
     <div>
         <label for="duration">Duration</label>
-        <input class="validate" id="duration" th:field="*{duration}" type="text" >
+        <input class="validate" id="duration" th:field="*{duration}" type="text">
 
     </div>
     <div>
         <label for="price">Price</label>
-        <input class="validate" id="price" th:field="*{price}"  type="text" >
+        <input class="validate" id="price" th:field="*{price}" type="text">
     </div>
 
     <div>
-        <input type="file" name="fileupload" value="fileupload" id="image" th:field="*{image}">
+        <input id="image" name="fileupload" th:field="*{image}" type="file" value="fileupload">
         <label for="image">Image</label>
     </div>
 
