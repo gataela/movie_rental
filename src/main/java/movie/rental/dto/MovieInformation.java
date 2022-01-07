@@ -1,13 +1,9 @@
-package movie.rental.entity;
+package movie.rental.dto;
 
-import javax.persistence.*;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
-@Entity
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class MovieInformation {
+
     private String name;
     private String description;
     private String launch_date;
@@ -15,33 +11,7 @@ public class Movie {
     private String type;
     private int duration;
     private double price;
-    @Lob
-    private byte[] image;
-    @OneToMany
-    private List<Rent> rents;
-
-    public Movie() {
-    }
-
-    public Movie(Long id, String name, String description, String launch_date, String director, String type, int duration, double price, byte[] image) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.launch_date = launch_date;
-        this.director = director;
-        this.type = type;
-        this.duration = duration;
-        this.price = price;
-        this.image = image;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private MultipartFile image;
 
     public String getName() {
         return name;
@@ -99,19 +69,11 @@ public class Movie {
         this.price = price;
     }
 
-    public byte[] getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
-    }
-
-    public List<Rent> getRents() {
-        return rents;
-    }
-
-    public void setRents(List<Rent> rents) {
-        this.rents = rents;
     }
 }

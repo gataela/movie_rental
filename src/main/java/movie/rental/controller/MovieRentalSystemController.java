@@ -1,5 +1,6 @@
 package movie.rental.controller;
 
+import movie.rental.dto.MovieInformation;
 import movie.rental.entity.Movie;
 import movie.rental.entity.User;
 import movie.rental.repository.MovieRepository;
@@ -69,12 +70,12 @@ public class MovieRentalSystemController {
     }
 
 
-    @RequestMapping(value = "/image/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    @RequestMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImage(@PathVariable("id") Long movieId) throws IOException {
         Movie movie = movieRepository.findById(movieId).get();
         byte[] imageContent = movie.getImage();
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
+        headers.setContentType(MediaType.IMAGE_JPEG);
         return new ResponseEntity<>(imageContent, headers, HttpStatus.OK);
     }
 
@@ -98,19 +99,32 @@ public class MovieRentalSystemController {
 
     @GetMapping("/showNewMovieForm")
     public String showNewMovieForm(Model model) {
-        Movie movie = new Movie();
-        // We can use this attribute "movie" to perform server-side rendering of the HTML with using Thymeleaf.
-        // We set movie object as "movie"
-        model.addAttribute("movie", movie);
-        //	shows the create_movie.html template:
-        return "create_movie";
+//        Movie movie = new Movie();
+//        // We can use this attribute "movie" to perform server-side rendering of the HTML with using Thymeleaf.
+//        // We set movie object as "movie"
+//        model.addAttribute("movie", movie);
+
+
+        MovieInformation movieInfo = new MovieInformation();
+        model.addAttribute("movieInfo", movieInfo);
+        //	shows the create_movie_info.html template:
+        return "create_movie_info";
     }
 
-    @PostMapping("/saveMovie")
-    // This means that this method will be executed when user sends POST Requests to "/saveUser"
-    // In our case, "http://localhost:8080/saveUser"
-    public String saveMovie(@ModelAttribute("movie") Movie movie) {
+    @RequestMapping("/saveMovieInfo")
+    // This means that this method will be executed when user sends POST Requests to "/saveMovie"
+    // In our case, "http://localhost:8080/saveMovie"
+    public String saveMovieInfo(@ModelAttribute("movieInfo") MovieInformation movieInfo) throws IOException {
         //	@ModelAttribute  binds the object called "movie" of request body from the POST request into the movie parameter of the save() method.
+        Movie movie = new Movie();
+        movie.setImage(movieInfo.getImage().getBytes());
+        movie.setPrice(movieInfo.getPrice());
+        movie.setDuration(movieInfo.getDuration());
+        movie.setLaunch_date(movieInfo.getLaunch_date());
+        movie.setDescription(movieInfo.getDescription());
+        movie.setType(movieInfo.getType());
+        movie.setDirector(movieInfo.getDirector());
+        movie.setName(movieInfo.getName());
         movieRepository.save(movie);
         // after save the user data to database, redirect to "/index"
         return "redirect:/";

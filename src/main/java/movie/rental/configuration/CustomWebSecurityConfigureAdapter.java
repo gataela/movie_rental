@@ -13,9 +13,10 @@ public class CustomWebSecurityConfigureAdapter extends WebSecurityConfigurerAdap
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.csrf().ignoringAntMatchers("/h2-console/**").disable()
+                .headers().frameOptions().disable().and()
                 .authorizeRequests()
-                .antMatchers("/", "/rentals", "/index").permitAll()
+                .antMatchers("/", "/rentals", "/index", "/h2-console*", "/image/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

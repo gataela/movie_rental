@@ -17,7 +17,8 @@
 <!-- The th:action="@{/saveMovie}" expression directs the form to POST to the /saveMovie endpoint.
      The th:object="${movie}" expression declares the model object to use for collecting the form data.
      The form fields, expressed with th:field, correspond to the fields in the Movie object. -->
-<form class="form-horizontal" method="post" th:action="@{/saveMovie}" th:object="${movie}">
+<form class="form-horizontal" enctype="multipart/form-data" method="post" th:action="@{/saveMovieInfo}"
+      th:object="${movieInfo}">
     <div>
         <label for="description">Movie Name</label>
         <input class="validate" id="name" th:field="*{name}" type="text">
@@ -49,8 +50,10 @@
     </div>
 
     <div>
-        <input id="image" name="fileupload" th:field="*{image}" type="file" value="fileupload">
         <label for="image">Image</label>
+        <input id="image" name="multipartFilesDocument" th:field="*{image}"
+               type="file" value="multipartFilesDocument"/>
+
     </div>
 
     <br>
